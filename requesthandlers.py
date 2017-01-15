@@ -1,3 +1,5 @@
+import os.path
+
 from webserver.httprequesthandler import HttpRequestHandler
 from http.httpresponsetypes import *
 
@@ -15,7 +17,8 @@ class FileRequestHandler(HttpRequestHandler):
 
 class BadPathRequestHandler(HttpRequestHandler):
     def can_handle(self, http_request):
-        return ".." in http_request.path()
+        real_path = os.path.realpath("./www" + http_request.path())
+        return "www" not in real_path
 
     def handle(self, http_request):
         return NotFound()
