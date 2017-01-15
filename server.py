@@ -1,9 +1,4 @@
 #  coding: utf-8 
-import SocketServer
-from webserver.webserver import WebServer
-from webserver.webserver import WebRequestHandler
-from http.httprequestparser import HttpRequestParser
-from requesthandlers import *
 
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
 # 
@@ -30,6 +25,12 @@ from requesthandlers import *
 
 # try: curl -v -X GET http://127.0.0.1:8080/
 
+import SocketServer
+from webserver.webserver import WebServer
+from webserver.webserver import WebRequestHandler
+from http.httprequestparser import HttpRequestParser
+from requesthandlers import *
+
 def build_mime_type_handler():
     mime_type_handler = MimeTypeHandler()
     mime_type_handler.register_mime_type("html", "text/html")
@@ -44,6 +45,7 @@ def build_web_server(host, port):
     WebServer.allow_reuse_address = True
     server = WebServer((host, port), WebRequestHandler, http_request_parser)
 
+    server.register_request_handler(BadPathRequestHandler())
     server.register_request_handler(DirectoryRequestHandler())
     server.register_request_handler(build_mime_type_handler())
     

@@ -13,6 +13,13 @@ class FileRequestHandler(HttpRequestHandler):
         except:
             return NotFound()
 
+class BadPathRequestHandler(HttpRequestHandler):
+    def can_handle(self, http_request):
+        return False
+
+    def handle(self, http_request):
+        return NotFound()
+
 class DirectoryRequestHandler(FileRequestHandler):
     def can_handle(self, http_request):
         return http_request.method() == "GET" and \
