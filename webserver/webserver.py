@@ -1,5 +1,5 @@
 import SocketServer
-from webserver.httprequesthandler import UnimplementedRequestHandler
+from httprequesthandler import UnimplementedRequestHandler
 
 class WebServer(SocketServer.TCPServer):
     def __init__(self, server_address, RequestHandlerClass, http_request_parser):
@@ -8,12 +8,12 @@ class WebServer(SocketServer.TCPServer):
         self._request_handlers = []
         
     def register_request_handler(self, request_handler):
-        self._request_handlers = [request_handler] + self._request_handlers
+        self._request_handlers = self._request_handlers.append(request_handler)
     
-    def http_request_parser():
+    def http_request_parser(self):
         return self._http_request_parser
 
-    def request_handlers():
+    def request_handlers(self):
         return self._request_handlers
 
 class WebRequestHandler(SocketServer.BaseRequestHandler):
@@ -21,8 +21,11 @@ class WebRequestHandler(SocketServer.BaseRequestHandler):
         raw_http_request = self.request.recv(1024).strip()
         http_request = self._parse_request(raw_http_request)
         request_handler = self._get_request_handler_for(http_request)
+        
+        http_response = request_handler.handle(http_request)
+        raw_http_response = http_response.serialize()
 
-        return request_handler.handle(http_request)
+        self.request.sendall(raw_http_response)
 
     def _parse_request(self, raw_http_request):
         return self.server.http_request_parser()

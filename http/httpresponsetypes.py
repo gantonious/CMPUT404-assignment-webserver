@@ -1,4 +1,4 @@
-from http.httpresponse import HttpResponse
+from httpresponse import HttpResponse
 
 class OK(HttpResponse):
     def __init__(self):

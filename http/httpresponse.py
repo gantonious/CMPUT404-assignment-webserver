@@ -22,7 +22,7 @@ class HttpResponse:
     def serialize(self):
         return self._build_response_line() + \
                self._build_header_lines() + \
-               self._build_data_line()
+               self._build_body_line()
 
     def _build_response_line(self):
         return "HTTP/1.1 {0} {1}".format(self._response_code, self._response_message)
@@ -34,7 +34,7 @@ class HttpResponse:
             return "\n" + "\n".join(header_lines)
         return ""
 
-    def _build_data_line(self):
-        if self._data:
-            return "\n\n{0}\n".format(self._data)
+    def _build_body_line(self):
+        if self._body:
+            return "\n\n{0}\n".format(self._body)
         return "\n\n"

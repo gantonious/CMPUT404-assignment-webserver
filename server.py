@@ -1,5 +1,8 @@
 #  coding: utf-8 
 import SocketServer
+from webserver.webserver import WebServer
+from webserver.webserver import WebRequestHandler
+from http.httprequestparser import HttpRequestParser
 
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
 # 
@@ -26,20 +29,16 @@ import SocketServer
 
 # try: curl -v -X GET http://127.0.0.1:8080/
 
-
-class MyWebServer(SocketServer.BaseRequestHandler):
-    
-    def handle(self):
-        self.data = self.request.recv(1024).strip()
-        print ("Got a request of: %s\n" % self.data)
-        self.request.sendall("OK")
+def build_web_server():
+    return None
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
 
-    SocketServer.TCPServer.allow_reuse_address = True
-    # Create the server, binding to localhost on port 8080
-    server = SocketServer.TCPServer((HOST, PORT), MyWebServer)
+    WebServer.allow_reuse_address = True
+    
+    http_request_parser = HttpRequestParser()
+    server = WebServer((HOST, PORT), WebRequestHandler, http_request_parser)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
