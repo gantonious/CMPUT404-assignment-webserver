@@ -15,7 +15,7 @@ class FileRequestHandler(HttpRequestHandler):
 
 class BadPathRequestHandler(HttpRequestHandler):
     def can_handle(self, http_request):
-        return False
+        return ".." in http_request.path()
 
     def handle(self, http_request):
         return NotFound()

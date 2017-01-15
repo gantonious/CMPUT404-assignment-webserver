@@ -21,13 +21,7 @@ class WebRequestHandler(SocketServer.BaseRequestHandler):
         raw_http_request = self.request.recv(1024).strip()
         http_request = self._parse_request(raw_http_request)
         request_handler = self._get_request_handler_for(http_request)
-        
-        print(http_request.path())
-        print(http_request.method())
-        print(http_request.headers())
 
-        print("Being handled by {}".format(request_handler))
-        
         http_response = request_handler.handle(http_request)
         raw_http_response = http_response.serialize()
 
