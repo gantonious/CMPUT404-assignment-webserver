@@ -8,7 +8,7 @@ class WebServer(SocketServer.TCPServer):
         self._request_handlers = []
         
     def register_request_handler(self, request_handler):
-        self._request_handlers = self._request_handlers.append(request_handler)
+        self._request_handlers.append(request_handler)
     
     def http_request_parser(self):
         return self._http_request_parser
@@ -22,13 +22,19 @@ class WebRequestHandler(SocketServer.BaseRequestHandler):
         http_request = self._parse_request(raw_http_request)
         request_handler = self._get_request_handler_for(http_request)
         
+        print(http_request.path())
+        print(http_request.method())
+        print(http_request.headers())
+
+        print("Being handled by {}".format(request_handler))
+        
         http_response = request_handler.handle(http_request)
         raw_http_response = http_response.serialize()
 
         self.request.sendall(raw_http_response)
 
     def _parse_request(self, raw_http_request):
-        return self.server.http_request_parser()
+        return self.server.http_request_parser().parse(raw_http_request)
     
     def _get_request_handler_for(self, request):             
         for handler in self.server.request_handlers():

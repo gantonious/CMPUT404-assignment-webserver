@@ -1,3 +1,4 @@
+import shlex
 from http.httprequest import HttpRequest
 
 class HttpRequestParser:
@@ -19,7 +20,7 @@ class HttpRequestParser:
                 if line != "\n":
                     body += line
         
-        request.set_body(body)
+        request.with_body(body)
         return request
                 
     def _parse_request_line(self, request_line):
@@ -28,4 +29,4 @@ class HttpRequestParser:
     
     def _parse_header_line(self, header_line, request):
         header_tokens = header_line.split(":")
-        request.add_header(header_tokens[0].strip(), header_tokens[1].strip())
+        request.with_header(header_tokens[0].strip(), header_tokens[1].strip())

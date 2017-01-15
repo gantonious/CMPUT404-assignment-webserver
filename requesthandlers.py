@@ -1,4 +1,5 @@
 from webserver.httprequesthandler import HttpRequestHandler
+from http.httpresponsetypes import *
 
 def load_file_as_string(path):
     with open(path, 'r') as file:
@@ -7,8 +8,8 @@ def load_file_as_string(path):
 class FileRequestHandler(HttpRequestHandler):
     def handle_file_request(self, path, file_type):
         try:
-            return OK().add_header("Content-Type", file_type) \
-                       .set_data(load_file_as_string(path))
+            return OK().with_header("Content-Type", file_type) \
+                       .with_body(load_file_as_string(path))
         except:
             return NotFound()
 

@@ -3,6 +3,7 @@ import SocketServer
 from webserver.webserver import WebServer
 from webserver.webserver import WebRequestHandler
 from http.httprequestparser import HttpRequestParser
+from requesthandlers import *
 
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
 # 
@@ -29,16 +30,27 @@ from http.httprequestparser import HttpRequestParser
 
 # try: curl -v -X GET http://127.0.0.1:8080/
 
-def build_web_server():
-    return None
+def build_mime_type_handler():
+    mime_type_handler = MimeTypeHandler()
+    mime_type_handler.register_mime_type("html", "text/html")
+    mime_type_handler.register_mime_type("css", "text/css")
+    mime_type_handler.register_mime_type("png", "image/png")
+
+    return mime_type_handler
+
+def build_web_server(host, port):
+    http_request_parser = HttpRequestParser()
+    
+    WebServer.allow_reuse_address = True
+    server = WebServer((host, port), WebRequestHandler, http_request_parser)
+
+    server.register_request_handler(DirectoryRequestHandler())
+    server.register_request_handler(build_mime_type_handler())
+    
+    return server
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 8080
-
-    WebServer.allow_reuse_address = True
-    
-    http_request_parser = HttpRequestParser()
-    server = WebServer((HOST, PORT), WebRequestHandler, http_request_parser)
+    server = build_web_server("localhost", 8080)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
