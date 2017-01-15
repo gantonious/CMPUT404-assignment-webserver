@@ -9,7 +9,7 @@ def load_file_as_string(path):
 def handle_file_request(path, file_type):
     try:
         return OK().with_header("Content-Type", file_type) \
-                    .with_body(load_file_as_string(path))
+                   .with_body(load_file_as_string(path))
     except:
         return NotFound()
 
