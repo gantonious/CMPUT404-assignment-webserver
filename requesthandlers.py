@@ -15,8 +15,9 @@ def handle_file_request(path, file_type):
 
 class BadPathRequestHandler(HttpRequestHandler):
     def can_handle(self, http_request):
-        real_path = os.path.realpath("./www" + http_request.path())
-        return "www" not in real_path
+        www_absolute_path= os.path.abspath("./www")
+        request_absolute_path = os.path.abspath("./www" + http_request.path())
+        return not request_absolute_path.startswith(www_absolute_path)
 
     def handle(self, http_request):
         return NotFound()
