@@ -31,10 +31,10 @@ class HttpResponse:
         header_lines = ["{0}: {1}".format(k, v) for k, v in self._headers.iteritems()]
 
         if header_lines:
-            return "\n" + "\n".join(header_lines)
+            return "\r\n" + "\r\n".join(header_lines)
         return ""
 
     def _build_body_line(self):
         if self._body:
-            return "\n\n{0}\n".format(self._body)
-        return "\n\n"
+            return "\r\n\r\n{0}\r\n".format(self._body)
+        return "\r\n\r\n"
