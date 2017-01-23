@@ -31,14 +31,6 @@ from webserver.webserver import WebRequestHandler
 from http.httprequestparser import HttpRequestParser
 from requesthandlers import *
 
-def build_file_request_handler():
-    file_request_handler = FileRequestHandler()
-    file_request_handler.register_mime_type("html", "text/html")
-    file_request_handler.register_mime_type("css", "text/css")
-    file_request_handler.register_mime_type("png", "image/png")
-
-    return file_request_handler
-
 def build_web_server(host, port):
     http_request_parser = HttpRequestParser()
     
@@ -47,7 +39,7 @@ def build_web_server(host, port):
 
     server.register_request_handler(BadPathRequestHandler())
     server.register_request_handler(DirectoryRequestHandler())
-    server.register_request_handler(build_file_request_handler())
+    server.register_request_handler(FileRequestHandler())
     
     return server
 
