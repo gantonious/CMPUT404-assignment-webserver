@@ -49,6 +49,8 @@ class HttpRequest:
         return self._method
 
     def path(self):
+        if "?" in self._path:
+            return self._path.split("?")[0]
         return self._path
 
     def headers(self):
