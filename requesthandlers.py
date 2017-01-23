@@ -51,9 +51,6 @@ class DirectoryRequestHandler(HttpRequestHandler):
         return handle_file_request(path)
 
 class FileRequestHandler(HttpRequestHandler):
-    def __init__(self):
-        self._files = {}
-
     def can_handle(self, http_request):
         return http_request.method() == "GET"
 
